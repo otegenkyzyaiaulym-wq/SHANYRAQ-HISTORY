@@ -56,7 +56,7 @@
         .section-header h2 { font-family: 'Oswald', sans-serif; font-size: 3rem; color: var(--accent); text-transform: uppercase; }
         .divider { width: 100px; height: 4px; background: var(--accent); margin: 15px auto; }
 
-        .grid-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; margin-top: 40px; }
+        .grid-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; margin-top: 40px; }
         .info-card { 
             background: var(--secondary); padding: 30px; border-radius: 15px; 
             border-left: 5px solid var(--accent); transition: 0.3s;
@@ -64,9 +64,9 @@
         }
         .info-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
         .info-card h3 { color: var(--accent); margin-bottom: 15px; font-family: 'Oswald'; font-size: 1.5rem; }
-        .info-card p { line-height: 1.6; font-size: 0.9rem; margin-bottom: 10px; }
+        .info-card p { line-height: 1.6; font-size: 0.9rem; margin-bottom: 10px; font-weight: bold; }
         .info-card ul { padding-left: 20px; list-style-type: square; color: var(--text-light); opacity: 0.9; font-size: 0.85rem; }
-        .info-card ul li { margin-bottom: 5px; }
+        .info-card ul li { margin-bottom: 8px; line-height: 1.4; }
 
         .pdf-link-box {
             background: var(--secondary); padding: 30px; border-radius: 15px; 
@@ -94,10 +94,10 @@
         .option-btn.wrong { background: var(--danger) !important; color: white; border-color: var(--danger); }
         
         .hero-banner {
-            height: 50vh; display: flex; flex-direction: column; justify-content: center; align-items: center;
+            min-height: 50vh; display: flex; flex-direction: column; justify-content: center; align-items: center;
             text-align: center; background: linear-gradient(rgba(2,12,27,0.85), rgba(2,12,27,0.85)), url('https://images.unsplash.com/photo-1541447271487-09612b3f49f7?q=80&w=1600');
             background-size: cover; background-position: center; border-bottom: 3px solid var(--accent);
-            padding: 20px;
+            padding: 40px 20px;
         }
     </style>
 </head>
@@ -133,7 +133,7 @@
     <section id="hero" class="section active">
         <div class="hero-banner">
             <h1 id="hero-title" style="font-size: 3.5rem; color: var(--accent); font-family: 'Oswald';">АҚБҰЛАҚТЫҢ АЩЫ ЖАСЫ</h1>
-            <p id="hero-desc" style="max-width: 800px; margin-top: 15px; font-size: 1.1rem;">ЕРЕУІЛ АТҚА ЕР САЛҒАНДАРДЫҢ АМАНАТЫ</p>
+            <p id="hero-desc" style="max-width: 800px; margin-top: 15px; font-size: 1.1rem; line-height: 1.4;">ЕРЕУІЛ АТҚА ЕР САЛҒАНДАРДЫҢ АМАНАТЫ</p>
             <button class="cta-btn" onclick="nav('quiz')" id="hero-btn">Тестті бастау</button>
         </div>
 
@@ -174,7 +174,6 @@
     </section>
 
     <script>
-        // Тест сұрақтары: Исатай, Махамбет, Жәңгір хан және 1836-1838 жж. көтеріліс
         const questionsDB = [
             { k:"Бөкей Ордасындағы көтерілістің басты жетекшілері кім?", r:"Кто были главными руководителями восстания в Букеевской Орде?", e:"Who were the main leaders of the uprising in the Bukey Horde?", a:{k:["Исатай мен Махамбет","Кенесары мен Наурызбай","Сырым Датұлы"], r:["Исатай и Махамбет","Кенесары и Наурызбай","Сырым Датов"], e:["Isatay and Makhambet","Kenesary and Nauryzbay","Syrym Datuly"]}, c:0 },
             { k:"Көтеріліс қай жылдары болды?", r:"В какие годы происходило восстание?", e:"In what years did the uprising take place?", a:{k:["1836-1838","1837-1847","1783-1797"], r:["1836-1838","1837-1847","1783-1797"], e:["1836-1838","1837-1847","1783-1797"]}, c:0 },
@@ -188,7 +187,6 @@
             { k:"Исатайды халық қалай сипаттаған?", r:"Как народ описывал Исатая?", e:"How did the people describe Isatay?", a:{k:["Қара қылды қақ жарған әділ","Қатал","Батыл"], r:["Справедливый","Суровый","Смелый"], e:["Fair and just","Harsh","Brave"]}, c:0 }
         ];
 
-        // 50 сұрақ жасау үшін базалық сұрақтарды вариациямен көбейту
         const quizData = [];
         for(let i=0; i<50; i++) {
             quizData.push({...questionsDB[i % 10], id: i});
@@ -200,32 +198,47 @@
                 heroT: "АҚБҰЛАҚТЫҢ АЩЫ ЖАСЫ", heroD: "ЕРЕУІЛ АТҚА ЕР САЛҒАНДАРДЫҢ АМАНАТЫ", heroB: "Тестті бастау",
                 cards: [
                     { t: "Исатай Тайманұлы", d: "Халық батыры, 1836-1838 жылдардағы көтеріліс басшысы.", l: ["Әділдігімен танылған.","Ақтабан тұлпарының иесі.","Ақбұлақ шайқасында қаза тапты."] },
-                    { t: "Махамбет Өтемісұлы", d: "Жалынды ақын, күйші, көтерілістің рух берушісі.", l: ["Өлеңдері халықты жігерлендірді.","Орыс тілін білген білымді тұлға.","Күйлері бүгінге дейін жеткен."] },
-                    { t: "Жәңгір хан", d: "Реформатор хан, Бөкей Ордасының билеушісі.", l: ["Алғаш мектеп ашты.","Мұражай мен кітапхана негізін қалады.","Реформалары қарапайым халыққа ауыр тиді."] }
+                    { t: "Махамбет Өтемісұлы", d: "Жалынды ақын, күйші, көтерілістің рух берушісі.", l: ["Өлеңдері халықты жігерлендірді.","Орыс тілін білген білімді тұлға.","Күйлері бүгінге дейін жеткен."] },
+                    { t: "Жәңгір хан", d: "Реформатор хан, Бөкей Ордасының билеушісі.", l: ["Алғаш мектеп ашты.","Мұражай мен кітапхана негізін қалады.","Реформалары қарапайым халыққа ауыр тиді."] },
+                    { t: "Басталуы (1833–1836 жж.)", d: "Себептері мен алғышарттары:", l: ["Жер мәселесі: Жайылымдар орыс помещиктері мен қазақ шонжарларының қолында болды.","Жәңгір ханның саясаты: Салықтардың көбеюі және туыстарын басқарушы етіп тағайындауы.","Әлеуметтік әділетсіздік: Төрелер мен қара халық арасындағы алшақтық.","1836 ж. ақпан: Исатай мен Махамбет халықты ашық қарсылыққа шақырды."] },
+                    { t: "Дамуы (1837 ж.)", d: "Қарсылықтың шырқау шегі:", l: ["Қарауылқожамен текетірес: Көтерілісшілер оның билігін мойындамайтынын мәлімдеді.","Хан ордасын қоршау (1837 ж. қазан): Ханнан салықты азайтуды талап етті.","Тастөбе шайқасы (1837 ж. 15 қараша): Алғашқы үлкен шайқас, зеңбірек күшінен жеңіліс."] },
+                    { t: "Соңы (1838 ж.)", d: "Жеңіліс және салдары:", l: ["Ақбұлақ шайқасы (1838 ж. 12 шілде): Көтерілістің соңғы нүктесі.","Исатайдың қазасы: Басшысыз қалған көтеріліс бөлшектеніп кетті.","Махамбеттің тағдыры: 1846 жылы жалдамалы адамдардың қолынан қаза тапты."] },
+                    { t: "Көтерілістің жеңілу себептері", d: "", l: ["1. Қару-жарақтың теңсіздігі: Садақ пен найзаға қарсы зеңбірек пен мылтық қолданылды.","2. Біртұтас жоспардың болмауы: Көтеріліс көбіне стихиялы сипатта болды.","3. Локалдылық: Көтеріліс тек Бөкей Ордасы мен Кіші жүздің бір бөлігін ғана қамтыды."] },
+                    { t: "Маңызы", d: "", l: ["Бұл көтеріліс патша үкіметі мен хан билігін сескендірді. Нәтижесінде салықтар біршама реттелді, ал ең бастысы — Махамбеттің жырлары арқылы халықтың азаттық рухы оянды. Бұл болашақ ұлт-азаттық қозғалыстарға (мысалы, Кенесары хан көтерілісіне) үлкен әсерін тигізді."] }
                 ],
-                comT: "Махамбет Комиксі", comD: "Махамбет Өтемісұлының ерлігі туралы оқыңыз.",
+                comT: "Махамбет Комиксі", comD: "Махамбет Өтемісұлының ерлігі мен өр рухын бейнелейтін графикалық туындыны оқыңыз.",
                 qT: "Бөкей Ордасы: 1836-1838 жж. көтеріліс", qP: "Сұрақ", rT: "Тест аяқталды!", rB: "Қайта бастау"
             },
             ru: {
                 navHome: "Главная", navComic: "Комикс", navQuiz: "Тест",
                 heroT: "ГОРЬКИЕ СЛЕЗЫ АКБУЛАКА", heroD: "ЗАВЕТ ТЕХ, КТО ОСЕДЛАЛ КОНЕЙ ДЛЯ ВОССТАНИЯ", heroB: "Начать тест",
                 cards: [
-                    { t: "Исатай Тайманулы", d: "Народный батыр, предводитель восстания 1836-1838 гг.", l: ["Известен своей справедливостью.","Владелец коня Актабан.","Погиб в битве при Акбулаке."] },
-                    { t: "Махамбет Утемисулы", d: "Пламенный поэт, кюйши, вдохновитель восстания.", l: ["Его стихи воодушевляли народ.","Образованный человек, знавший русский язык.","Его кюи исполняются до сих пор."] },
-                    { t: "Жангир хан", d: "Хан-реформатор, правитель Букеевской Орды.", l: ["Открыл первую школу.","Основал музей и библиотеку.","Его реформы были тяжелы для народа."] }
+                    { t: "Исатай Тайманулы", d: "Народный батыр, предводитель восстания 1836-1838 гг.", l: ["Известен справедливостью.","Владелец коня Актабан.","Погиб в битве при Акбулаке."] },
+                    { t: "Махамбет Утемисулы", d: "Пламенный поэт, кюйши, вдохновитель восстания.", l: ["Его стихи воодушевляли народ.","Знал русский язык.","Его кюи исполняются до сих пор."] },
+                    { t: "Жангир хан", d: "Хан-реформатор, правитель Букеевской Орды.", l: ["Открыл первую школу.","Основал музей и библиотеку.","Его реформы были тяжелы для народа."] },
+                    { t: "Начало (1833–1836 гг.)", d: "Причины и предпосылки:", l: ["Земельный вопрос: пастбища в руках помещиков и баев.","Политика Жангир хана: рост налогов и кумовство.","Социальная несправедливость: разрыв между знатью и народом.","Февраль 1836: открытый призыв к сопротивлению."] },
+                    { t: "Развитие (1837 г.)", d: "Пик противостояния:", l: ["Конфликт с Караулкожой: отказ признавать власть ставленника хана.","Осада Ханской ставки (октябрь 1837): требования снизить налоги.","Сражение при Тастобе (15 ноября 1837): поражение от артиллерии."] },
+                    { t: "Конец (1838 г.)", d: "Поражение и последствия:", l: ["Битва при Акбулаке (12 июля 1838): решающая точка восстания.","Гибель Исатая: восстание распалось без лидера.","Судьба Махамбета: погиб в 1846 году от рук наемников."] },
+                    { t: "Причины поражения восстания", d: "", l: ["1. Неравенство вооружения: пушки и ружья против луков и копий.","2. Отсутствие единого плана: восстание носило преимущественно стихийный характер.","3. Локальность: восстание охватило лишь Букеевскую Орду и часть Младшего жуза."] },
+                    { t: "Значение", d: "", l: ["Это восстание заставило царское правительство и ханскую власть встревожиться. В результате налоги были частично упорядочены, а главное — через стихи Махамбета пробудился освободительный дух народа. Это оказало большое влияние на будущие национально-освободительные движения (например, восстание Кенесары хана)."] }
                 ],
-                comT: "Комикс Махамбет", comD: "Читайте о мужестве Махамбета Утемисулы.",
+                comT: "Комикс Махамбет", comD: "Читайте о мужестве и духе Махамбета Утемисулы.",
                 qT: "Букеевская Орда: Восстание 1836-1838 гг.", qP: "Вопрос", rT: "Тест завершен!", rB: "Начать заново"
             },
             en: {
                 navHome: "Home", navComic: "Comic", navQuiz: "Quiz",
                 heroT: "BITTER TEARS OF AKBULAK", heroD: "LEGACY OF THOSE WHO SADDLED HORSES FOR REBELLION", heroB: "Start Quiz",
                 cards: [
-                    { t: "Isatay Taymanuly", d: "People's hero, leader of the 1836-1838 uprising.", l: ["Famous for his fairness.","Owner of the horse Aktaban.","Died in the Battle of Akbulak."] },
-                    { t: "Makhambet Utemisuly", d: "Fiery poet, composer, the spirit of the rebellion.", l: ["His poems encouraged the people.","Educated person, knew Russian.","His musical works live on today."] },
-                    { t: "Zhangir Khan", d: "Reforming Khan, ruler of the Bukey Horde.", l: ["Opened the first school.","Founded a museum and library.","His reforms were hard for the commoners."] }
+                    { t: "Isatay Taymanuly", d: "People's hero, leader of the 1836-1838 uprising.", l: ["Famous for fairness.","Owner of horse Aktaban.","Died in the Battle of Akbulak."] },
+                    { t: "Makhambet Utemisuly", d: "Fiery poet, composer, the spirit of the rebellion.", l: ["Poems inspired the people.","Educated, knew Russian.","His musical works live on."] },
+                    { t: "Zhangir Khan", d: "Reforming Khan, ruler of the Bukey Horde.", l: ["Opened the first school.","Founded museum and library.","His reforms were hard for the commoners."] },
+                    { t: "Beginning (1833–1836)", d: "Causes and Prerequisites:", l: ["Land issue: best pastures taken by Russian landlords and local elites.","Zhangir Khan's policy: heavy taxes and nepotism.","Social injustice: gap between 'tore' and commoners.","Feb 1836: Isatay and Makhambet called for open revolt."] },
+                    { t: "Development (1837)", d: "The Peak of Resistance:", l: ["Conflict with Karaulkozha: rebels refused his authority.","Siege of Khan's HQ (Oct 1837): demand for tax reduction.","Battle of Tastobe (Nov 15, 1837): first major battle, defeat by cannons."] },
+                    { t: "The End (1838)", d: "Defeat and Consequences:", l: ["Battle of Akbulak (July 12, 1838): the final act.","Death of Isatay: the uprising fell apart without its leader.","Makhambet's fate: assassinated in 1846 by mercenaries."] },
+                    { t: "Reasons for the Defeat", d: "", l: ["1. Inequality of weapons: cannons and rifles were used against bows and spears.","2. Lack of a unified plan: the uprising was mostly spontaneous.","3. Locality: the revolt only covered the Bukey Horde and part of the Junior Zhuz."] },
+                    { t: "Significance", d: "", l: ["This uprising alarmed the tsarist government and the khan's power. As a result, taxes were somewhat regulated, and most importantly, the people's spirit of freedom was awakened through Makhambet's poems. This had a great impact on future national liberation movements (for example, the uprising of Kenesary Khan)."] }
                 ],
-                comT: "Makhambet Comic", comD: "Read about the bravery of Makhambet Utemisuly.",
+                comT: "Makhambet Comic", comD: "Read the graphic novel about Makhambet's bravery.",
                 qT: "Bukey Horde: Uprising 1836-1838", qP: "Question", rT: "Quiz Finished!", rB: "Restart"
             }
         };
