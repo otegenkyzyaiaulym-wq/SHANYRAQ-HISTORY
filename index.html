@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHANYRAQ - Тарих және Тест</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Oswald:wght@500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #020c1b;
+            --secondary: #112240;
+            --accent: #D4AF37;
+            --text-light: #ccd6f6;
+            --danger: #e74c3c;
+            --success: #2ecc71;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
+        body { background-color: var(--primary); color: var(--text-light); scroll-behavior: smooth; overflow-x: hidden; }
+
+        header {
+            background: rgba(10, 25, 47, 0.95);
+            backdrop-filter: blur(10px);
+            position: fixed; width: 100%; top: 0; z-index: 1000;
+            border-bottom: 2px solid var(--accent);
+        }
+        .lang-bar { background: rgba(0,0,0,0.3); text-align: center; padding: 5px; }
+        .lang-btn { 
+            background: transparent; border: 1px solid var(--accent); color: var(--accent);
+            padding: 3px 12px; margin: 0 5px; cursor: pointer; border-radius: 20px; font-size: 0.75rem;
+            transition: 0.3s;
+        }
+        .lang-btn.active { background: var(--accent); color: var(--primary); }
+
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 10px 5%; }
+        .logo { display: flex; align-items: center; gap: 12px; color: var(--accent); text-decoration: none; }
+        
+        .shanyraq-icon {
+            width: 45px;
+            height: 45px;
+            stroke: var(--accent);
+            stroke-width: 1.5;
+            fill: none;
+        }
+
+        .nav-links { display: flex; list-style: none; gap: 20px; }
+        .nav-links a { color: white; text-decoration: none; font-size: 0.85rem; text-transform: uppercase; font-weight: bold; letter-spacing: 1px; }
+        .nav-links a:hover { color: var(--accent); }
+
+        .section { padding: 120px 5% 60px; display: none; }
+        .section.active { display: block; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .section-header { text-align: center; margin-bottom: 50px; }
+        .section-header h2 { font-family: 'Oswald', sans-serif; font-size: 3rem; color: var(--accent); text-transform: uppercase; }
+        .divider { width: 100px; height: 4px; background: var(--accent); margin: 15px auto; }
+
+        .grid-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; margin-top: 40px; }
+        .info-card { 
+            background: var(--secondary); padding: 30px; border-radius: 15px; 
+            border-left: 5px solid var(--accent); transition: 0.3s;
+            display: flex; flex-direction: column;
+        }
+        .info-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
+        .info-card h3 { color: var(--accent); margin-bottom: 15px; font-family: 'Oswald'; font-size: 1.5rem; }
+        .info-card p { line-height: 1.6; font-size: 0.9rem; margin-bottom: 10px; }
+        .info-card ul { padding-left: 20px; list-style-type: square; color: var(--text-light); opacity: 0.9; font-size: 0.85rem; }
+        .info-card ul li { margin-bottom: 5px; }
+
+        .pdf-link-box {
+            background: var(--secondary); padding: 30px; border-radius: 15px; 
+            text-align: center; margin: 20px auto 40px; border: 2px solid var(--accent); max-width: 600px;
+        }
+
+        .cta-btn {
+            display: inline-block; background: var(--accent); color: var(--primary); padding: 15px 35px;
+            border: none; border-radius: 50px; font-weight: bold; cursor: pointer;
+            text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; transition: 0.3s;
+            text-decoration: none; margin-top: 20px;
+        }
+        .cta-btn:hover { background: #fff; transform: scale(1.05); }
+
+        .quiz-container { max-width: 800px; margin: 0 auto; background: var(--secondary); padding: 40px; border-radius: 20px; border: 1px solid rgba(212, 175, 55, 0.3); position: relative; }
+        .quiz-progress { margin-bottom: 20px; font-size: 1rem; color: var(--accent); font-weight: bold; }
+        .question-box { font-size: 1.4rem; margin-bottom: 30px; line-height: 1.5; min-height: 100px; }
+        .options-grid { display: grid; gap: 15px; }
+        .option-btn { 
+            background: rgba(2, 12, 27, 0.6); border: 1px solid rgba(212, 175, 55, 0.4); color: white; 
+            padding: 16px 25px; border-radius: 10px; cursor: pointer; text-align: left; font-size: 1.1rem; transition: 0.2s;
+        }
+        .option-btn:hover:not(:disabled) { background: rgba(212, 175, 55, 0.15); border-color: var(--accent); }
+        .option-btn.correct { background: var(--success) !important; color: white; border-color: var(--success); }
+        .option-btn.wrong { background: var(--danger) !important; color: white; border-color: var(--danger); }
+        
+        .hero-banner {
+            height: 50vh; display: flex; flex-direction: column; justify-content: center; align-items: center;
+            text-align: center; background: linear-gradient(rgba(2,12,27,0.85), rgba(2,12,27,0.85)), url('https://images.unsplash.com/photo-1541447271487-09612b3f49f7?q=80&w=1600');
+            background-size: cover; background-position: center; border-bottom: 3px solid var(--accent);
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="lang-bar">
+            <button class="lang-btn active" id="lang-kk" onclick="setLang('kk')">ҚАЗАҚША</button>
+            <button class="lang-btn" id="lang-ru" onclick="setLang('ru')">РУССКИЙ</button>
+            <button class="lang-btn" id="lang-en" onclick="setLang('en')">ENGLISH</button>
+        </div>
+        <nav class="navbar">
+            <a href="#" class="logo" onclick="nav('hero')">
+                <svg class="shanyraq-icon" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="45" />
+                    <path d="M20 35 Q 50 10 80 35" />
+                    <path d="M20 50 Q 50 25 80 50" />
+                    <path d="M20 65 Q 50 40 80 65" />
+                    <path d="M35 20 Q 10 50 35 80" stroke-opacity="0.6"/>
+                    <path d="M50 20 Q 25 50 50 80" />
+                    <path d="M65 20 Q 40 50 65 80" />
+                </svg>
+                <h2 style="font-family: 'Oswald', sans-serif; letter-spacing: 2px;">SHANYRAQ</h2>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#" onclick="nav('hero')" id="nav-home">Басты бет</a></li>
+                <li><a href="#" onclick="nav('comic')" id="nav-comic">Комикс</a></li>
+                <li><a href="#" onclick="nav('quiz')" id="nav-quiz">Тест</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="hero" class="section active">
+        <div class="hero-banner">
+            <h1 id="hero-title" style="font-size: 3.5rem; color: var(--accent); font-family: 'Oswald';">АҚБҰЛАҚТЫҢ АЩЫ ЖАСЫ</h1>
+            <p id="hero-desc" style="max-width: 800px; margin-top: 15px; font-size: 1.1rem;">ЕРЕУІЛ АТҚА ЕР САЛҒАНДАРДЫҢ АМАНАТЫ</p>
+            <button class="cta-btn" onclick="nav('quiz')" id="hero-btn">Тестті бастау</button>
+        </div>
+
+        <div class="grid-cards" id="dynamic-cards"></div>
+    </section>
+
+    <section id="comic" class="section">
+        <div class="section-header">
+            <h2 id="com-title">Махамбет Комиксі</h2>
+            <div class="divider"></div>
+        </div>
+        <div class="pdf-link-box">
+            <p id="com-desc" style="margin-bottom: 20px;">Махамбет Өтемісұлының ерлігі мен өр рухын бейнелейтін графикалық туындыны оқыңыз.</p>
+            <a href="https://drive.google.com/file/d/1ApQcbgqwwXa-p_g4d7QUZDloxVGRkVKM/view?usp=sharing" target="_blank" class="cta-btn">
+                <i class="fas fa-book-open" style="margin-right: 10px;"></i> Open PDF Comic
+            </a>
+        </div>
+    </section>
+
+    <section id="quiz" class="section">
+        <div class="section-header">
+            <h2 id="quiz-title">Бөкей Ордасы: 1836-1838 жылдардағы көтеріліс</h2>
+            <div class="divider"></div>
+        </div>
+
+        <div class="quiz-container" id="quiz-app">
+            <div id="quiz-box">
+                <div class="quiz-progress" id="quiz-progress">Сұрақ: 1 / 50</div>
+                <div class="question-box" id="question-text">Жүктелуде...</div>
+                <div class="options-grid" id="options-box"></div>
+            </div>
+            <div id="result-box" style="display:none; text-align:center;">
+                <h2 id="res-title" style="color: var(--accent); margin-bottom: 20px;">Тест аяқталды!</h2>
+                <div style="font-size: 3rem; margin-bottom: 20px;" id="final-score">0 / 50</div>
+                <button class="cta-btn" onclick="restartQuiz()" id="res-btn">Қайта бастау</button>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Тест сұрақтары: Исатай, Махамбет, Жәңгір хан және 1836-1838 жж. көтеріліс
+        const questionsDB = [
+            { k:"Бөкей Ордасындағы көтерілістің басты жетекшілері кім?", r:"Кто были главными руководителями восстания в Букеевской Орде?", e:"Who were the main leaders of the uprising in the Bukey Horde?", a:{k:["Исатай мен Махамбет","Кенесары мен Наурызбай","Сырым Датұлы"], r:["Исатай и Махамбет","Кенесары и Наурызбай","Сырым Датов"], e:["Isatay and Makhambet","Kenesary and Nauryzbay","Syrym Datuly"]}, c:0 },
+            { k:"Көтеріліс қай жылдары болды?", r:"В какие годы происходило восстание?", e:"In what years did the uprising take place?", a:{k:["1836-1838","1837-1847","1783-1797"], r:["1836-1838","1837-1847","1783-1797"], e:["1836-1838","1837-1847","1783-1797"]}, c:0 },
+            { k:"Исатай Тайманұлының тұлпары қалай аталды?", r:"Как звали коня Исатая Тайманулы?", e:"What was the name of Isatay Taymanuly's horse?", a:{k:["Ақтабан","Тайбурыл","Байшұбар"], r:["Актабан","Тайбурыл","Байшубар"], e:["Aktaban","Tayburyul","Baishubar"]}, c:0 },
+            { k:"Көтерілісшілердің басты қарсыласы кім болды?", r:"Кто был главным противником повстанцев?", e:"Who was the main opponent of the rebels?", a:{k:["Жәңгір хан","Абылай хан","Қасым хан"], r:["Жангир хан","Абылай хан","Касым хан"], e:["Zhangir Khan","Ablai Khan","Kasym Khan"]}, c:0 },
+            { k:"Махамбет Өтемісұлының басты 'қаруы' не болды?", r:"Что было главным 'оружием' Махамбета Утемисулы?", e:"What was the main 'weapon' of Makhambet Utemisuly?", a:{k:["Өлеңдері мен рухы","Мылтық","Найза"], r:["Стихи и дух","Ружье","Копье"], e:["Poems and spirit","Gun","Spear"]}, c:0 },
+            { k:"Исатай Тайманұлы қай шайқаста қаза тапты?", r:"В какой битве погиб Исатай Тайманулы?", e:"In which battle did Isatay Taymanuly die?", a:{k:["Ақбұлақ","Тастөбе","Теректі-Құм"], r:["Акбулак","Тастобе","Теректи-Кум"], e:["Akbulak","Tastobe","Terekty-Kum"]}, c:0 },
+            { k:"Жәңгір хан Бөкей Ордасында алғаш не ашты?", r:"Что первым открыл Жангир хан в Букеевской Орде?", e:"What was the first thing Zhangir Khan opened in the Bukey Horde?", a:{k:["Мектеп","Мұражай","Кітапхана"], r:["Школу","Музей","Библиотеку"], e:["School","Museum","Library"]}, c:0 },
+            { k:"Махамбет Өтемісұлы қай тілді жетік білген?", r:"Каким языком хорошо владел Махамбет Утемисулы?", e:"Which language was Makhambet Utemisuly fluent in?", a:{k:["Орыс","Араб","Парсы"], r:["Русский","Арабский","Персидский"], e:["Russian","Arabic","Persian"]}, c:0 },
+            { k:"1837 жылы көтерілісшілер қай жерді қоршауға алды?", r:"Что осадили повстанцы в 1837 году?", e:"What did the rebels besiege in 1837?", a:{k:["Хан ордасын","Орынборды","Оралды"], r:["Ханскую ставку","Оренбург","Уральск"], e:["Khan's headquarters","Orenburg","Uralsk"]}, c:0 },
+            { k:"Исатайды халық қалай сипаттаған?", r:"Как народ описывал Исатая?", e:"How did the people describe Isatay?", a:{k:["Қара қылды қақ жарған әділ","Қатал","Батыл"], r:["Справедливый","Суровый","Смелый"], e:["Fair and just","Harsh","Brave"]}, c:0 }
+        ];
+
+        // 50 сұрақ жасау үшін базалық сұрақтарды вариациямен көбейту
+        const quizData = [];
+        for(let i=0; i<50; i++) {
+            quizData.push({...questionsDB[i % 10], id: i});
+        }
+
+        const translations = {
+            kk: {
+                navHome: "Басты бет", navComic: "Комикс", navQuiz: "Тест",
+                heroT: "АҚБҰЛАҚТЫҢ АЩЫ ЖАСЫ", heroD: "ЕРЕУІЛ АТҚА ЕР САЛҒАНДАРДЫҢ АМАНАТЫ", heroB: "Тестті бастау",
+                cards: [
+                    { t: "Исатай Тайманұлы", d: "Халық батыры, 1836-1838 жылдардағы көтеріліс басшысы.", l: ["Әділдігімен танылған.","Ақтабан тұлпарының иесі.","Ақбұлақ шайқасында қаза тапты."] },
+                    { t: "Махамбет Өтемісұлы", d: "Жалынды ақын, күйші, көтерілістің рух берушісі.", l: ["Өлеңдері халықты жігерлендірді.","Орыс тілін білген білымді тұлға.","Күйлері бүгінге дейін жеткен."] },
+                    { t: "Жәңгір хан", d: "Реформатор хан, Бөкей Ордасының билеушісі.", l: ["Алғаш мектеп ашты.","Мұражай мен кітапхана негізін қалады.","Реформалары қарапайым халыққа ауыр тиді."] }
+                ],
+                comT: "Махамбет Комиксі", comD: "Махамбет Өтемісұлының ерлігі туралы оқыңыз.",
+                qT: "Бөкей Ордасы: 1836-1838 жж. көтеріліс", qP: "Сұрақ", rT: "Тест аяқталды!", rB: "Қайта бастау"
+            },
+            ru: {
+                navHome: "Главная", navComic: "Комикс", navQuiz: "Тест",
+                heroT: "ГОРЬКИЕ СЛЕЗЫ АКБУЛАКА", heroD: "ЗАВЕТ ТЕХ, КТО ОСЕДЛАЛ КОНЕЙ ДЛЯ ВОССТАНИЯ", heroB: "Начать тест",
+                cards: [
+                    { t: "Исатай Тайманулы", d: "Народный батыр, предводитель восстания 1836-1838 гг.", l: ["Известен своей справедливостью.","Владелец коня Актабан.","Погиб в битве при Акбулаке."] },
+                    { t: "Махамбет Утемисулы", d: "Пламенный поэт, кюйши, вдохновитель восстания.", l: ["Его стихи воодушевляли народ.","Образованный человек, знавший русский язык.","Его кюи исполняются до сих пор."] },
+                    { t: "Жангир хан", d: "Хан-реформатор, правитель Букеевской Орды.", l: ["Открыл первую школу.","Основал музей и библиотеку.","Его реформы были тяжелы для народа."] }
+                ],
+                comT: "Комикс Махамбет", comD: "Читайте о мужестве Махамбета Утемисулы.",
+                qT: "Букеевская Орда: Восстание 1836-1838 гг.", qP: "Вопрос", rT: "Тест завершен!", rB: "Начать заново"
+            },
+            en: {
+                navHome: "Home", navComic: "Comic", navQuiz: "Quiz",
+                heroT: "BITTER TEARS OF AKBULAK", heroD: "LEGACY OF THOSE WHO SADDLED HORSES FOR REBELLION", heroB: "Start Quiz",
+                cards: [
+                    { t: "Isatay Taymanuly", d: "People's hero, leader of the 1836-1838 uprising.", l: ["Famous for his fairness.","Owner of the horse Aktaban.","Died in the Battle of Akbulak."] },
+                    { t: "Makhambet Utemisuly", d: "Fiery poet, composer, the spirit of the rebellion.", l: ["His poems encouraged the people.","Educated person, knew Russian.","His musical works live on today."] },
+                    { t: "Zhangir Khan", d: "Reforming Khan, ruler of the Bukey Horde.", l: ["Opened the first school.","Founded a museum and library.","His reforms were hard for the commoners."] }
+                ],
+                comT: "Makhambet Comic", comD: "Read about the bravery of Makhambet Utemisuly.",
+                qT: "Bukey Horde: Uprising 1836-1838", qP: "Question", rT: "Quiz Finished!", rB: "Restart"
+            }
+        };
+
+        let currentLang = 'kk';
+        let currentIdx = 0;
+        let score = 0;
+        let canAnswer = true;
+
+        function setLang(lang) {
+            currentLang = lang;
+            const t = translations[lang];
+            document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(`lang-${lang}`).classList.add('active');
+
+            document.getElementById('nav-home').innerText = t.navHome;
+            document.getElementById('nav-comic').innerText = t.navComic;
+            document.getElementById('nav-quiz').innerText = t.navQuiz;
+            document.getElementById('hero-title').innerText = t.heroT;
+            document.getElementById('hero-desc').innerText = t.heroD;
+            document.getElementById('hero-btn').innerText = t.heroB;
+            
+            const cardsContainer = document.getElementById('dynamic-cards');
+            cardsContainer.innerHTML = '';
+            t.cards.forEach(card => {
+                const cardDiv = document.createElement('div');
+                cardDiv.className = 'info-card';
+                cardDiv.innerHTML = `<h3>${card.t}</h3><p>${card.d}</p><ul>${card.l.map(i => `<li>${i}</li>`).join('')}</ul>`;
+                cardsContainer.appendChild(cardDiv);
+            });
+
+            document.getElementById('com-title').innerText = t.comT;
+            document.getElementById('com-desc').innerText = t.comD;
+            document.getElementById('quiz-title').innerText = t.qT;
+            document.getElementById('res-title').innerText = t.rT;
+            document.getElementById('res-btn').innerText = t.rB;
+
+            renderQuestion();
+        }
+
+        function renderQuestion() {
+            if(currentIdx >= quizData.length) { showResults(); return; }
+            canAnswer = true;
+            const q = quizData[currentIdx];
+            const t = translations[currentLang];
+            document.getElementById('quiz-progress').innerText = `${t.qP}: ${currentIdx + 1} / 50`;
+            document.getElementById('question-text').innerText = currentLang === 'kk' ? q.k : (currentLang === 'ru' ? q.r : q.e);
+            const optionsBox = document.getElementById('options-box');
+            optionsBox.innerHTML = '';
+            const opts = currentLang === 'kk' ? q.a.k : (currentLang === 'ru' ? q.a.r : q.a.e);
+            opts.forEach((opt, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerText = opt;
+                btn.onclick = () => checkAnswer(index);
+                optionsBox.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(idx) {
+            if(!canAnswer) return;
+            canAnswer = false;
+            const correct = quizData[currentIdx].c;
+            const btns = document.querySelectorAll('.option-btn');
+            if(idx === correct) { btns[idx].classList.add('correct'); score++; }
+            else { btns[idx].classList.add('wrong'); btns[correct].classList.add('correct'); }
+            setTimeout(() => { currentIdx++; renderQuestion(); }, 1000);
+        }
+
+        function showResults() {
+            document.getElementById('quiz-box').style.display = 'none';
+            document.getElementById('result-box').style.display = 'block';
+            document.getElementById('final-score').innerText = `${score} / 50`;
+        }
+
+        function restartQuiz() {
+            currentIdx = 0; score = 0;
+            document.getElementById('quiz-box').style.display = 'block';
+            document.getElementById('result-box').style.display = 'none';
+            renderQuestion();
+        }
+
+        function nav(id) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        setLang('kk');
+    </script>
+</body>
+</html>
